@@ -4,7 +4,7 @@ import cv2
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Flatten
 from keras.layers.convolutional import Conv2D
-from keras.optimizers import Adam
+from keras.optimizers import adam_v2
 from keras.layers.pooling import MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 import os
@@ -25,12 +25,12 @@ def plot_model_history(model_history):
     """
     fig, axs = plt.subplots(1,2,figsize=(15,5))
     # summarize history for accuracy
-    axs[0].plot(range(1,len(model_history.history['acc'])+1),model_history.history['acc'])
-    axs[0].plot(range(1,len(model_history.history['val_acc'])+1),model_history.history['val_acc'])
+    axs[0].plot(range(1,len(model_history.history['accuracy'])+1),model_history.history['accuracy'])
+    axs[0].plot(range(1,len(model_history.history['val_accuracy'])+1),model_history.history['val_accuracy'])
     axs[0].set_title('Model Accuracy')
     axs[0].set_ylabel('Accuracy')
     axs[0].set_xlabel('Epoch')
-    axs[0].set_xticks(np.arange(1,len(model_history.history['acc'])+1),len(model_history.history['acc'])/10)
+    axs[0].set_xticks(np.arange(1,len(model_history.history['accuracy'])+1),len(model_history.history['accuracy'])/10)
     axs[0].legend(['train', 'val'], loc='best')
     # summarize history for loss
     axs[1].plot(range(1,len(model_history.history['loss'])+1),model_history.history['loss'])
@@ -90,7 +90,7 @@ model.add(Dense(7, activation='softmax'))
 
 # If you want to train the same model or try other models, go for this
 if mode == "train":
-    model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.0001, decay=1e-6),metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy',optimizer=adam_v2.Adam(lr=0.0001, decay=1e-6),metrics=['accuracy'])
 
     model_info = model.fit_generator(
             train_generator,
